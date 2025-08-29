@@ -47,6 +47,14 @@ for post in posts:
         ans_list.append(content_text)
     else:
         ans_list.append("No Content")
+        
+# Pretty print results
+for i, (title, content) in enumerate(zip(qes_list, ans_list), start=1):
+    print(f"\n=== Post {i} ===")
+    print(f"📌 Title: {title}")
+    print("📝 Content:")
+    print(content[:500] + ("..." if len(content) > 500 else ""))  # truncate long text
+    print("=" * 100)
 
 # Insert into DB
 for title, content in zip(qes_list, ans_list):
