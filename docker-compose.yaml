@@ -1,12 +1,12 @@
 version: "3"
 services:
-  pyhton_service:
+  python_service:
     build:
       context: ./
       dockerfile: Dockerfile
     image: workshop1
     container_name: workshop_python_container
-    stdin_open: true #  docker attach container_id
+    stdin_open: true
     tty: true
     ports:
      - "8000:8000"
@@ -14,13 +14,23 @@ services:
      - .:/app
     depends_on:
      - postgres_service
+    environment:
+     - DATABASE_HOST=postgres_service
+     - DATABASE_NAME=PythonBlog
+     - DATABASE_USER=postgres
+     - DATABASE_PASSWORD=admin
 
   postgres_service:
-    image: postgres
+    image: postgres:13
     container_name: workshop_postgres_container
     ports:
      - "5432:5432"
     environment:
      POSTGRES_PASSWORD: admin
+     POSTGRES_DB: PythonBlog  # Automatically creates the database
     volumes:
-     - .:/var/lib/postgres
+     - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
+    driver: local
